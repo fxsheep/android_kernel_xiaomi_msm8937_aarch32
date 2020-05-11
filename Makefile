@@ -386,7 +386,7 @@ CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage -fno-tree-loop-im
 
 # fall back to -march=armv8-a in case the compiler isn't compatible
 # with -mcpu and -mtune
-ARM_ARCH_OPT := -mcpu=cortex-a53 -mtune=cortex-a53
+#ARM_ARCH_OPT := -mcpu=cortex-a53 -mtune=cortex-a53
 GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a) \
  -g0 \
  -DNDEBUG \
@@ -419,7 +419,7 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Werror-implicit-function-declaration -Wno-misleading-indentation -Wno-unused-const-variable \
 		   -Wno-format-security -Wno-discarded-array-qualifiers -Wno-memset-transposed-args \
 		   -Wno-bool-compare -Wno-logical-not-parentheses -Wno-switch-bool -Wno-tautological-compare \
-		   -mcpu=cortex-a53 -mtune=cortex-a53 \
+#		   -mcpu=cortex-a53 -mtune=cortex-a53 \
 		   -std=gnu89 \
 		   $(GEN_OPT_FLAGS)
 KBUILD_AFLAGS_KERNEL := $(GEN_OPT_FLAGS)
