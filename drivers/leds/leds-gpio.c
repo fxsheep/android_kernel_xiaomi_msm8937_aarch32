@@ -25,7 +25,9 @@
 #include <linux/pinctrl/consumer.h>
 #include <linux/err.h>
 #include <linux/delay.h>
+#ifdef CONFIG_ARM
 #include <linux/math64.h>
+#endif
 #define DUTY_CLCLE 50
 #define ADJUST_NUM 15
 #define JUSTTIMES 6
@@ -224,8 +226,11 @@ static s64 time_adjust(struct gpio_ir_tx_packet *gpkt)
 		gpio_ir_tx_set(gpkt, false);
 	}
 	spin_unlock_irqrestore(&infrared_lock, flags);
-
+#ifdef CONFIG_ARM
 	return div_s64((ktime_to_us(ktime_get()) - now), ADJUST_NUM);
+#else
+	return (ktime_to_us(ktime_get()) - now) / ADJUST_NUM;
+#endif
 }
 
 static long pwm_ir_tx_work(void *arg)
