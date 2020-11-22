@@ -17,6 +17,9 @@
 #include <linux/msm-sps.h>
 #include <linux/gcd.h>
 #include "slim-msm.h"
+#ifdef CONFIG_ARM
+#include <linux/math64.h>
+#endif
 
 int msm_slim_rx_enqueue(struct msm_slim_ctrl *dev, u32 *buf, u8 len)
 {
@@ -547,8 +550,12 @@ void msm_slim_tx_msg_return(struct msm_slim_ctrl *dev, int err)
 					&mem->phys_base, &addr);
 			continue;
 		}
+#ifdef CONFIG_ARM
+		idx = (int)div_s64((addr - mem->phys_base), SLIM_MSGQ_BUF_LEN);
+#else
 		idx = (int) ((addr - mem->phys_base)
-			/ SLIM_MSGQ_BUF_LEN);
+					/ SLIM_MSGQ_BUF_LEN);		
+#endif
 		if (dev->wr_comp[idx]) {
 			struct completion *comp = dev->wr_comp[idx];
 			dev->wr_comp[idx] = NULL;

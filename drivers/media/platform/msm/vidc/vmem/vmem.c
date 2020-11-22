@@ -28,6 +28,9 @@
 #include <linux/workqueue.h>
 #include "vmem.h"
 #include "vmem_debugfs.h"
+#ifdef CONFIG_ARM
+#include <linux/math64.h>
+#endif
 
 /* Registers */
 #define OCIMEM_BASE(v)               ((uint8_t *)(v)->reg.base)
@@ -551,8 +554,11 @@ static inline int __init_resources(struct vmem *v,
 		rc = -ENOENT;
 		goto free_pdata;
 	}
-
+#ifdef CONFIG_ARM
+	v->num_banks = div_s64(resource_size(v->mem.resource), v->bank_size);
+#else
 	v->num_banks = resource_size(v->mem.resource) / v->bank_size;
+#endif
 
 	pr_debug("Found configuration with %d banks with size %d\n",
 			v->num_banks, v->bank_size);
