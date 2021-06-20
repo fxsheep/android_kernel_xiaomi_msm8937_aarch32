@@ -14,6 +14,7 @@
 #include "skeleton64.dtsi"
 #include <dt-bindings/clock/msm-clocks-8952.h>
 #include <dt-bindings/regulator/qcom,rpm-smd-regulator.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
 
 / {
 	model = "Qualcomm Technologies, Inc. MSM8937";
@@ -128,11 +129,14 @@
 	compatible = "simple-bus";
 
 	intc: interrupt-controller@b000000 {
-		compatible = "qcom,msm-qgic2";
+		compatible = "arm,cortex-a15-gic";
 		interrupt-controller;
 		#interrupt-cells = <3>;
 		reg = <0x0b000000 0x1000>,
-		      <0x0b002000 0x1000>;
+		      <0x0b002000 0x2000>,
+		      <0x0b001000 0x1000>,
+		      <0x0b004000 0x2000>;
+		interrupts = <GIC_PPI 0 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>;
 	};
 
 	timer {
